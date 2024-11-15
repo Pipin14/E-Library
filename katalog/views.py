@@ -25,20 +25,32 @@ def katalog(request):
 @login_required
 def katalog_view(request):
     query = request.GET.get('query', '')
+    favorite_filter = request.GET.get('favorite', 'all')
     books = Book.objects.all()
-    
+
     if query:
         books = books.filter(
             Q(title__icontains=query) |
             Q(description__icontains=query) |
-            Q(publication_year__icontains=query)
+            Q(publication_year__icontains=query) |
+            Q(author__icontains=query) |
+            Q(genre__icontains=query)
         )
+
+    if favorite_filter == 'favorite':
+        books = books.filter(is_favorite=True)
+    elif favorite_filter == 'notFavorite':
+        books = books.filter(is_favorite=False)
 
     paginator = Paginator(books, 8)
     page_number = request.GET.get('page', 1)
     books_page = paginator.get_page(page_number)
 
-    return render(request, 'katalog/katalog.html', {'books': books_page, 'query': query})
+    return render(request, 'katalog/katalog.html', {
+        'books': books_page,
+        'query': query,
+        'favorite': favorite_filter
+    })
 
 
 @login_required

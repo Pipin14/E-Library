@@ -16,11 +16,9 @@
                 <option value="notFavorite" {% if request.GET.favorite == 'notFavorite' %}selected{% endif %}>Bukan Favorit</option>
             </select>
         </div>
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm sm:text-base">Terapkan</button>
-    </form>
-    
+    </form>    
 
-    <!-- Menampilkan Buku -->
+
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {% for book in books %}
         <div class="bg-white p-4 rounded-lg shadow-md">
@@ -45,12 +43,19 @@
                 <a href="{% url 'book_detail' book.id %}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700  focus:ring-blue-500 focus:outline-none text-sm">View Detail</a>
             </div>
         </div>
-        {% empty %}
-            <p class="text-center text-gray-500 col-span-full font-bold">Tidak ada buku yang diupload.</p>
-        {% endfor %}
-    </div>
+            {% empty %}
+                {% if favorite_filter == 'favorite' %}
+                <p class="text-center text-gray-500 col-span-full font-bold">Tidak ada buku yang difavoritkan tersimpan.</p>
+                {% elif favorite_filter == 'notFavorite' %}
+                    <p class="text-center text-gray-500 col-span-full font-bold">Tidak ada buku yang bukan favorit tersimpan.</p>
+                {% elif favorite_filter == 'all' %}
+                    <p class="text-center text-gray-500 col-span-full font-bold">Tidak ada buku yang diupload.</p>
+                {% else %}
+                    <p class="text-center text-gray-500 col-span-full font-bold">Tidak ada buku yang difavoritkan tersimpan.</p>
+                {% endif %}
+            {% endfor %}
+        </div>
 
-    <!-- Paginasi -->
     <div class="flex justify-center items-center mt-8 space-x-2">
         <button id="firstPage" class="px-3 py-1 bg-gray-200 rounded-lg text-gray-700 text-sm" {% if books.has_previous %}onclick="goToFirstPage()" {% else %}disabled{% endif %}>First</button>
         <button id="prevPage" class="px-3 py-1 bg-gray-200 rounded-lg text-gray-700 text-sm" {% if books.has_previous %}onclick="goToPrevPage()" {% else %}disabled{% endif %}>Prev</button>
@@ -59,4 +64,9 @@
         <button id="lastPage" class="px-3 py-1 bg-gray-200 rounded-lg text-gray-700 text-sm" {% if books.has_next %}onclick="goToLastPage()" {% else %}disabled{% endif %}>Last</button>
     </div>
 </div>
+<script>
+    document.getElementById('favoriteFilter').addEventListener('change', function() {
+        this.form.submit();
+    });
+</script>
 {% endblock %}
