@@ -3,22 +3,24 @@
 {% block title %}Katalog Buku{% endblock %}
 
 {% block content %}
-
 {% load static %}
 <div class="max-w-screen-2xl">
     <h2 class="text-2xl font-bold mb-4">Katalog Buku</h2>
     
-    <div class="flex justify-between items-center mb-4">
-        <div>
-            <label for="favoriteFilter" class="mr-2">Filter Favorit:</label>
-            <select id="favoriteFilter" class="px-4 py-2 border rounded-lg">
-                <option value="all">Semua</option>
-                <option value="favorite">Favorit</option>
-                <option value="notFavorite">Bukan Favorit</option>
+    <form method="GET" action="{% url 'katalog' %}" class="flex justify-between items-center mb-4 flex-wrap">
+        <div class="flex items-center mb-2 sm:mb-0">
+            <label for="favoriteFilter" class="mr-2 text-sm sm:text-base">Filter Favorit:</label>
+            <select id="favoriteFilter" name="favorite" class="px-4 py-2 border rounded-lg text-sm sm:text-base">
+                <option value="all" {% if request.GET.favorite == 'all' %}selected{% endif %}>Semua</option>
+                <option value="favorite" {% if request.GET.favorite == 'favorite' %}selected{% endif %}>Favorit</option>
+                <option value="notFavorite" {% if request.GET.favorite == 'notFavorite' %}selected{% endif %}>Bukan Favorit</option>
             </select>
         </div>
-    </div>
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm sm:text-base">Terapkan</button>
+    </form>
+    
 
+    <!-- Menampilkan Buku -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {% for book in books %}
         <div class="bg-white p-4 rounded-lg shadow-md">
@@ -27,7 +29,6 @@
             <h3 class="font-bold text-lg">{{ book.title }}</h3>
             <p class="text-sm text-gray-600 mb-4">{{ book.description|truncatewords:20 }}</p>
             <div class="flex justify-between items-center">
-
                 <form method="POST" action="{% url 'toggle_favorite' book.id %}">
                     {% csrf_token %}
                     <button type="submit" class="text-yellow-500 bookmark-btn">
@@ -38,8 +39,6 @@
                         {% endif %}
                     </button>
                 </form>
-                
-                
                 <span class="text-sm text-gray-500">Genre: {{ book.genre }}</span>
             </div>
             <div class="mt-4 text-left">
@@ -51,14 +50,13 @@
         {% endfor %}
     </div>
 
+    <!-- Paginasi -->
     <div class="flex justify-center items-center mt-8 space-x-2">
-        <button id="firstPage" class="px-3 py-1 bg-gray-200 rounded-lg text-gray-700 text-sm" onclick="goToFirstPage()">First</button>
-        <button id="prevPage" class="px-3 py-1 bg-gray-200 rounded-lg text-gray-700 text-sm" onclick="goToPrevPage()">Prev</button>
-        <span id="pageStatus" class="text-gray-500 text-sm">Page 1 of 5</span>
-        <button id="nextPage" class="px-3 py-1 bg-gray-200 rounded-lg text-gray-700 text-sm" onclick="goToNextPage()">Next</button>
-        <button id="lastPage" class="px-3 py-1 bg-gray-200 rounded-lg text-gray-700 text-sm" onclick="goToLastPage()">Last</button>
+        <button id="firstPage" class="px-3 py-1 bg-gray-200 rounded-lg text-gray-700 text-sm" {% if books.has_previous %}onclick="goToFirstPage()" {% else %}disabled{% endif %}>First</button>
+        <button id="prevPage" class="px-3 py-1 bg-gray-200 rounded-lg text-gray-700 text-sm" {% if books.has_previous %}onclick="goToPrevPage()" {% else %}disabled{% endif %}>Prev</button>
+        <span id="pageStatus" class="text-gray-500 text-sm">Page {{ books.number }} of {{ books.paginator.num_pages }}</span>
+        <button id="nextPage" class="px-3 py-1 bg-gray-200 rounded-lg text-gray-700 text-sm" {% if books.has_next %}onclick="goToNextPage()" {% else %}disabled{% endif %}>Next</button>
+        <button id="lastPage" class="px-3 py-1 bg-gray-200 rounded-lg text-gray-700 text-sm" {% if books.has_next %}onclick="goToLastPage()" {% else %}disabled{% endif %}>Last</button>
     </div>
-    
-    <script src="{% static 'js/pagination.js' %}"></script>
 </div>
 {% endblock %}

@@ -22,3 +22,7 @@ class BookForm(forms.ModelForm):
     class Meta:
         model = Book
         fields = ['cover_image', 'title', 'description', 'author', 'genre', 'publication_year', 'page_count']
+
+
+class SearchForm(forms.Form):
+    query = forms.CharField(required=False, label='Cari', widget=forms.TextInput(attrs={'placeholder': 'Cari judul, tahun, deskripsi'}))

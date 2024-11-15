@@ -6,12 +6,12 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import BookUploadForm
-from django.http import JsonResponse
 from .models import Book, Favorite
 from .forms import BookForm
 from django.contrib import messages
 from katalog.utils import analyze_text
-
+from django.db.models import Q
+from django.core.paginator import Paginator
 
 logger = logging.getLogger(__name__)
 
@@ -24,8 +24,21 @@ def katalog(request):
 
 @login_required
 def katalog_view(request):
+    query = request.GET.get('query', '')
     books = Book.objects.all()
-    return render(request, 'katalog/katalog.html', {'books': books})
+    
+    if query:
+        books = books.filter(
+            Q(title__icontains=query) |
+            Q(description__icontains=query) |
+            Q(publication_year__icontains=query)
+        )
+
+    paginator = Paginator(books, 8)
+    page_number = request.GET.get('page', 1)
+    books_page = paginator.get_page(page_number)
+
+    return render(request, 'katalog/katalog.html', {'books': books_page, 'query': query})
 
 
 @login_required

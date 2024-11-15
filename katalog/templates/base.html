@@ -46,8 +46,8 @@
             <div class="hidden lg:flex items-center space-x-4 ml-auto">
                 <a href="{% url 'katalog' %}" class="text-white hover:text-gray-200">Katalog</a>
                 <a href="{% url 'favorit' %}" class="text-white hover:text-gray-200">Favorit</a>
-                <form method="GET" action="#" class="flex items-center space-x-2">
-                    <input type="text" name="query" placeholder="Cari berdasarkan judul, deskripsi, atau genre..." class="w-96 px-4 py-2 rounded-lg border border-gray-300" value="{{ request.GET.query }}">
+                <form method="GET" action="{% url 'katalog' %}" class="flex items-center space-x-2">
+                    <input type="text" name="query" value="{{ query }}" placeholder="Cari Judul, Deskripsi, Tahun" class="px-4 py-2 border rounded-lg hidden sm:block">
                     <button type="submit" class="bg-gray-300 p-2 rounded-full">
                         <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
