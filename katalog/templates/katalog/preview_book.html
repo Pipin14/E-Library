@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Preview Buku - {{ book.title }}{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto p-4">
+        <!-- Top Navbar -->
+        <div class="flex items-center justify-between bg-gray-800 text-white p-4 rounded-t-lg">
+            <!-- Tombol Back -->
+            <a href="{% url 'katalog' %}" class="text-lg font-semibold">
+                < Back
+            </a>
+
+            <!-- Judul Buku -->
+            <h2 class="text-xl font-bold">{{ book.title }}</h2>
+
+            <!-- Tombol Previous & Next -->
+            <div class="flex space-x-4">
+                <a href="{% if prev_page %}{% url 'preview_book' book.id prev_page %}{% else %}#{% endif %}" 
+                   class="px-4 py-2 bg-blue-600 text-white rounded-lg {{ 'cursor-not-allowed opacity-50' if not prev_page else '' }}" 
+                   {% if not prev_page %}disabled{% endif %}>
+                    Previous
+                </a>
+                <a href="{% if next_page %}{% url 'preview_book' book.id next_page %}{% else %}#{% endif %}" 
+                   class="px-4 py-2 bg-blue-600 text-white rounded-lg {{ 'cursor-not-allowed opacity-50' if not next_page else '' }}" 
+                   {% if not next_page %}disabled{% endif %}>
+                    Next
+                </a>
+            </div>
+        </div>
+
+        <!-- Halaman Buku -->
+        <div class="mt-4">
+            <img src="{{ img_path }}" alt="Halaman {{ page_number }}" class="w-full h-auto rounded-lg shadow-lg">
+        </div>
+
+        <!-- Informasi Halaman -->
+        <div class="mt-4 text-center">
+            <p class="text-sm text-gray-600">Halaman {{ page_number }} dari {{ total_pages }}</p>
+        </div>
+    </div>
+{% endblock %}

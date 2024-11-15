@@ -21,5 +21,8 @@ urlpatterns = [
     path('book/delete/<int:book_id>/', views.delete_book, name='delete_book'),
     path('book/analyze/<int:book_id>/', views.analyze_book, name='analyze_book'),
 
+    path('book/<int:book_id>/preview/<int:page_number>/', views.preview_book, name='preview_book'),
+
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -99,36 +99,60 @@
     </div>
 
     {% if messages %}
-        <div class="container mx-auto mt-4 space-y-4">
+        <div class="container mx-auto mt-4 space-y-4 px-4 sm:px-0">
             {% for message in messages %}
-                <div class="flex items-center p-4 mb-4 text-white bg-{{ message.tags }}-500 rounded-lg shadow-lg transform transition-transform duration-300 hover:scale-105">
-                    <!-- Ikon yang dinamis sesuai jenis pesan -->
+                <div class="flex items-center p-4 mb-4 text-white rounded-lg shadow-lg
+                            {% if message.tags == 'success' %}
+                                bg-green-500
+                            {% elif message.tags == 'error' %}
+                                bg-red-500
+                            {% elif message.tags == 'warning' %}
+                                bg-yellow-500
+                            {% elif message.tags == 'info' %}
+                                bg-blue-500
+                            {% else %}
+                                bg-gray-500
+                            {% endif %}">
+                    
                     {% if message.tags == 'success' %}
-                        <i class="fas fa-check-circle text-2xl mr-3"></i>
+                        <i class="fas fa-check-circle text-2xl sm:text-3xl mr-3"></i>
                     {% elif message.tags == 'error' %}
-                        <i class="fas fa-exclamation-circle text-2xl mr-3"></i>
+                        <i class="fas fa-exclamation-circle text-2xl sm:text-3xl mr-3"></i>
                     {% elif message.tags == 'warning' %}
-                        <i class="fas fa-exclamation-triangle text-2xl mr-3"></i>
+                        <i class="fas fa-exclamation-triangle text-2xl sm:text-3xl mr-3"></i>
                     {% elif message.tags == 'info' %}
-                        <i class="fas fa-info-circle text-2xl mr-3"></i>
+                        <i class="fas fa-info-circle text-2xl sm:text-3xl mr-3"></i>
                     {% else %}
-                        <i class="fas fa-comment text-2xl mr-3"></i>
+                        <i class="fas fa-comment text-2xl sm:text-3xl mr-3"></i>
                     {% endif %}
                     
-                    <div class="flex-1">
+                    <div class="flex-1 text-sm sm:text-base">
                         {{ message }}
                     </div>
+
+                    <button type="button" class="ml-3 mr-3 text-white hover:text-gray-300 focus:outline-none" onclick="this.parentElement.style.display='none';">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+
                 </div>
             {% endfor %}
         </div>
     {% endif %}
 
-    <div class="max-w-screen-2xl mx-4 p-4">
-        {% block content %}
-
-        {% endblock %}
+    <div class="flex-1">
+        <div class="max-w-screen-2xl mx-4 p-4">
+            {% block content %}
+            {% endblock %}
+        </div>
     </div>
-
+    
+    <footer class="bg-gray-800 text-white py-4 mt-auto">
+        <div class="container mx-auto text-center">
+            <p class="text-sm">
+                &copy; 2024 E-Library by Pipin Yuliyanto. All rights reserved.
+            </p>
+        </div>
+    </footer>
     <script>
         // Toggle Hamburger Menu
         const hamburgerButton = document.getElementById('hamburgerButton');
