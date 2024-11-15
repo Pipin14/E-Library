@@ -15,5 +15,8 @@ urlpatterns = [
     path('upload/', upload_book, name='upload_book'),
     path('favorit/', include('favorit.urls')),
     path('toggle-favorite/<int:book_id>/', views.toggle_favorite, name='toggle_favorite'),
+    
+    path('book/<int:book_id>/', views.book_detail, name='book_detail'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

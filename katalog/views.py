@@ -3,8 +3,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import BookUploadForm
 from django.http import JsonResponse
-from .models import Book
+from .models import Book, Favorite
 import logging
+
 
 logger = logging.getLogger(__name__)
 
@@ -43,26 +44,6 @@ def upload_book(request):
 
     return render(request, 'katalog/upload_buku.html', {'form': form})
 
-
-# def toggle_favorite(request, book_id):
-#     if request.user.is_authenticated:
-#         try:
-#             book = Book.objects.get(id=book_id)
-#             book = get_object_or_404(Book, id=book_id, user=request.user)
-#             book.is_favorite = not book.is_favorite
-#             book.save()
-#             return JsonResponse({'status': 'success', 'is_favorite': book.is_favorite})
-#         except Book.DoesNotExist:
-#             return JsonResponse({'status': 'error', 'message': 'Book not found'})
-#     else:
-#         return JsonResponse({'status': 'error', 'message': 'User not authenticated'})
-        
-
-from django.shortcuts import get_object_or_404, redirect
-from django.http import JsonResponse
-from .models import Book, Favorite
-from django.contrib.auth.decorators import login_required
-
 @login_required
 def toggle_favorite(request, book_id):
     book = get_object_or_404(Book, id=book_id)
@@ -75,3 +56,22 @@ def toggle_favorite(request, book_id):
         is_favorite = True
     
     return redirect(request.META.get('HTTP_REFERER', 'katalog'))
+
+
+from django.shortcuts import render, get_object_or_404
+from .models import Book
+
+def book_detail(request, book_id):
+    # Ambil buku berdasarkan ID
+    book = get_object_or_404(Book, id=book_id)
+
+    # Ambil kata-kata relevan untuk analisis (sesuaikan dengan implementasi Anda)
+    relevant_words = ["contoh", "kata", "relevan"]  # Anda bisa mengganti dengan logika analisis Anda
+
+    # Kirimkan context ke template
+    context = {
+        'book': book,
+        'relevant_words': relevant_words,
+    }
+
+    return render(request, 'katalog/book_detail.html', context)

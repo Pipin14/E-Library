@@ -23,33 +23,17 @@ def favorite_books(request):
     return render(request, 'favorit/favorit_buku.html', {'books': books})
 
 
-# @login_required
-# def toggle_favorite(request, book_id):
-#     book = get_object_or_404(Book, id=book_id)
-    
-#     favorite, created = Favorite.objects.get_or_create(user=request.user, book=book)
-
-#     if not created:
-#         favorite.delete()
-
-#     return redirect(request.META.get('HTTP_REFERER', 'katalog'))
-
-from django.shortcuts import get_object_or_404, redirect
-from .models import Favorite
-from katalog.models import Book
-from django.contrib.auth.decorators import login_required
-
 @login_required
 def toggle_favorite(request, book_id):
-    # Ambil buku berdasarkan id
+    # Ambil objek Book berdasarkan ID
     book = get_object_or_404(Book, id=book_id)
 
-    # Cek apakah buku sudah ada di daftar favorit
+    # Cek apakah sudah ada entry favorit untuk buku ini dan user yang bersangkutan
     favorite, created = Favorite.objects.get_or_create(user=request.user, book=book)
 
-    # Jika sudah ada (created == False), maka hapus dari favorit
+    # Jika sudah ada, maka hapus
     if not created:
         favorite.delete()
 
-    # Redirect kembali ke halaman sebelumnya
+    # Kembali ke halaman sebelumnya
     return redirect(request.META.get('HTTP_REFERER', 'katalog'))
