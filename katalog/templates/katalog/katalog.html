@@ -3,9 +3,11 @@
 {% block title %}Katalog Buku{% endblock %}
 
 {% block content %}
+
+{% load static %}
 <div class="max-w-screen-2xl">
     <h2 class="text-2xl font-bold mb-4">Katalog Buku</h2>
-    <!-- Filter Katalog -->
+    
     <div class="flex justify-between items-center mb-4">
         <div>
             <label for="favoriteFilter" class="mr-2">Filter Favorit:</label>
@@ -18,65 +20,24 @@
     </div>
 
     <!-- Daftar Buku -->
-    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        <!-- Item Buku 1 -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {% for book in books %}
         <div class="bg-white p-4 rounded-lg shadow-md">
             {% load static %}
-            <img src="{% static 'assets/buku1.jpg' %}" alt="Cover Buku" class="w-full h-40 object-cover rounded-md mb-4">
-            <h3 class="font-bold text-lg">Judul Buku 1</h3>
-            <p class="text-sm text-gray-600 mb-4">Deskripsi singkat buku ini. Dapatkan informasi lebih lanjut dengan membaca buku ini...</p>
+            <img src="{% if book.cover_image %}{{ book.cover_image.url }}{% else %}{% static 'assets/default-cover.jpg' %}{% endif %}" alt="Cover Buku" class="w-full h-40 object-cover rounded-md mb-4">
+            <h3 class="font-bold text-lg">{{ book.title }}</h3>
+            <p class="text-sm text-gray-600 mb-4">{{ book.description|truncatewords:20 }}</p>
+            <p>File PDF: {{ book.pdf_file }}</p> <!-- Untuk memastikan PDF tersedia -->
             <div class="flex justify-between items-center">
-                <button class="text-yellow-500 bookmark-btn" data-id="1">
+                <button class="text-yellow-500 bookmark-btn" data-id="{{ book.id }}">
                     <!-- Bookmark Icon -->
                 </button>
-                <span class="text-sm text-gray-500">Genre: Fiksi</span>
+                <span class="text-sm text-gray-500">Genre: {{ book.genre }}</span>
             </div>
         </div>
-        <!-- Item Buku 2 -->
-        <div class="bg-white p-4 rounded-lg shadow-md">
-            <img src="{% static 'assets/buku1.jpg' %}" alt="Cover Buku" class="w-full h-40 object-cover rounded-md mb-4">
-            <h3 class="font-bold text-lg">Judul Buku 2</h3>
-            <p class="text-sm text-gray-600 mb-4">Deskripsi singkat buku ini. Dapatkan informasi lebih lanjut dengan membaca buku ini...</p>
-            <div class="flex justify-between items-center">
-                <button class="text-yellow-500">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                </button>
-                <span class="text-sm text-gray-500">Genre: Non-Fiksi</span>
-            </div>
-        </div>
-
-        <!-- Item Buku 3 -->
-        <div class="bg-white p-4 rounded-lg shadow-md">
-            <img src="{% static 'assets/buku1.jpg' %}" alt="Cover Buku" class="w-full h-40 object-cover rounded-md mb-4">
-            <h3 class="font-bold text-lg">Judul Buku 3</h3>
-            <p class="text-sm text-gray-600 mb-4">Deskripsi singkat buku ini. Dapatkan informasi lebih lanjut dengan membaca buku ini...</p>
-            <div class="flex justify-between items-center">
-                <button class="text-yellow-500">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                </button>
-                <span class="text-sm text-gray-500">Genre: Misteri</span>
-            </div>
-        </div>
-
-        <!-- Item Buku 4 -->
-        <div class="bg-white p-4 rounded-lg shadow-md">
-            <img src="{% static 'assets/buku1.jpg' %}" alt="Cover Buku" class="w-full h-40 object-cover rounded-md mb-4">
-            <h3 class="font-bold text-lg">Judul Buku 4</h3>
-            <p class="text-sm text-gray-600 mb-4">Deskripsi singkat buku ini. Dapatkan informasi lebih lanjut dengan membaca buku ini...</p>
-            <div class="flex justify-between items-center">
-                <button class="text-yellow-500">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                </button>
-                <span class="text-sm text-gray-500">Genre: Teknologi</span>
-            </div>
-        </div>
-    </div>
+        {% empty %}
+            <p class="text-center text-gray-500 col-span-full font-bold">Tidak ada buku yang diupload.</p>
+        {% endfor %}
     </div>
 
     <!-- Pagination -->

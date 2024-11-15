@@ -9,19 +9,6 @@
         <!-- Form untuk upload buku -->
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            
-            <!-- File PDF -->
-            <div class="mb-4">
-                <label for="pdf_file" class="block text-sm font-medium text-gray-700">File PDF</label>
-                <input type="file" name="pdf_file" id="pdf_file" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                {% if form.pdf_file.errors %}
-                    <div class="text-sm text-red-500 mt-1">
-                        {% for error in form.pdf_file.errors %}
-                            <p>{{ error }}</p>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            </div>
 
             <!-- Judul Buku -->
             <div class="mb-4">
@@ -87,6 +74,36 @@
                     </div>
                 {% endif %}
             </div>
+            
+            <!-- Jumlah Halaman -->
+            <div class="mb-4">
+                <label for="page_count" class="block text-sm font-medium text-gray-700">Jumlah Halaman</label>
+                <input type="number" name="page_count" id="page_count" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                {% if form.page_count.errors %}
+                    <div class="text-sm text-red-500 mt-1">
+                        {% for error in form.page_count.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-4">
+                <label for="pdf_file" class="block text-sm font-medium text-gray-700">File PDF</label>
+                <input type="file" name="pdf_file" id="pdf_file" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                {% if form.pdf_file.errors %}
+                    <div class="text-sm text-red-500 mt-1">
+                        {% for error in form.pdf_file.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="mb-4">
+                <label for="cover_image" class="block text-sm font-medium text-gray-700">Cover Image</label>
+                <input type="file" name="cover_image" id="cover_image" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+            </div>
+
 
             <div class="flex justify-end space-x-4 mt-6">
                 <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm">Upload Buku</button>
