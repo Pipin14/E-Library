@@ -71,6 +71,8 @@ def book_detail(request, book_id):
 
     return render(request, 'katalog/book_detail.html', context)
 
+from django.contrib import messages
+
 @login_required
 def edit_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
@@ -79,22 +81,12 @@ def edit_book(request, book_id):
         form = BookForm(request.POST, request.FILES, instance=book)
         if form.is_valid():
             form.save()
+            messages.success(request, f'Buku "{book.title}" berhasil diupdate.')
             return redirect('book_detail', book_id=book.id)
     else:
         form = BookForm(instance=book)
     
     return render(request, 'katalog/edit_book.html', {'form': form, 'book': book})
-
-# @login_required
-# def delete_book(request, book_id):
-#     book = get_object_or_404(Book, id=book_id)
-    
-#     if request.method == 'POST':
-#         book.delete()
-#         messages.success(request, f'Buku "{book.title}" berhasil dihapus.')
-#         return redirect('book_list')
-    
-#     return render(request, 'katalog', {'book': book})
 
 
 def delete_book(request, book_id):

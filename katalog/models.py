@@ -13,7 +13,7 @@ class Book(models.Model):
     genre = models.CharField(max_length=100)
     publication_year = models.IntegerField()
     page_count = models.IntegerField()
-    cover_image = models.ImageField(upload_to='books/covers/')
+    cover_image = models.ImageField(upload_to='books/covers/', blank=True, null=True)
     pdf_file = models.FileField(upload_to='books/pdf', blank=True, null=True)
     is_favorite = models.BooleanField(default=False)
 

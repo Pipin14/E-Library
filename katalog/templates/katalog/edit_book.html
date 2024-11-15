@@ -4,14 +4,70 @@
 
 {% load static %}
 <div class="container mx-auto p-6">
-    <div class="bg-white p-6 rounded-lg shadow-md">
-        <h1 class="font-bold text-3xl mb-4">Edit Buku: {{ book.title }}</h1>
-        
+    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-300">
+        <h1 class="font-bold text-2xl mb-4">Edit Buku: {{ book.title }}</h1>
+        {% if form.errors %}
+            <div class="text-red-500">
+                <ul>
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <li>{{ field.label }}: {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg">Simpan Perubahan</button>
+            <div class="mb-4">
+                <label for="id_pdf_file" class="block text-sm font-medium text-gray-700">File PDF</label>
+                <input type="file" name="pdf_file" id="id_pdf_file" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            </div>
+            <div class="mb-4">
+                <label for="id_cover_image" class="block text-sm font-medium text-gray-700">Cover Image</label>
+                <input type="file" name="cover_image" id="id_cover_image" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                <div class="mt-2">
+                    {% if book.cover_image %}
+                        <img src="{{ book.cover_image.url }}" alt="Cover Image" class="h-24 w-24 object-cover">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="mb-4">
+                <label for="id_title" class="block text-sm font-medium text-gray-700">Judul</label>
+                <input type="text" name="title" id="id_title" value="{{ book.title }}" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            </div>
+            <div class="mb-4">
+                <label for="id_description" class="block text-sm font-medium text-gray-700">Deskripsi</label>
+                <textarea name="description" id="id_description" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none">{{ book.description }}</textarea>
+            </div>
+            <div class="mb-4">
+                <label for="id_author" class="block text-sm font-medium text-gray-700">Penulis</label>
+                <input type="text" name="author" id="id_author" value="{{ book.author }}" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            </div>
+            <div class="mb-4">
+                <label for="id_publication_year" class="block text-sm font-medium text-gray-700">Tahun Terbit</label>
+                <input type="number" name="publication_year" id="id_publication_year" value="{{ book.publication_year }}" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            </div>
+            <div class="mb-4">
+                <label for="id_genre" class="block text-sm font-medium text-gray-700">Genre</label>
+                <input type="text" name="genre" id="id_genre" value="{{ book.genre }}" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            </div>
+            <div class="mb-4">
+                <label for="id_page_count" class="block text-sm font-medium text-gray-700">Jumlah Halaman</label>
+                <input type="number" name="page_count" id="id_page_count" value="{{ book.page_count }}" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            </div>
+
+            <div class="flex justify-end space-x-4">
+                <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm">
+                    Simpan Perubahan
+                </button>
+                <a href="{% url 'book_detail' book.id %}" class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 focus:ring-2 focus:ring-gray-500 focus:outline-none text-sm">
+                    Kembali
+                </a>
+            </div>
         </form>
     </div>
 </div>
+
 {% endblock %}

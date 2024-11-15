@@ -6,14 +6,29 @@
     <div class="max-w-screen-md mx-auto p-6 bg-white shadow-lg rounded-lg mt-8 border border-gray-300">
         <h2 class="text-2xl font-bold text-center mb-6 text-black">Upload Buku</h2>
 
-        <!-- Form untuk upload buku -->
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
+            
+            <div class="mb-4">
+                <label for="pdf_file" class="block text-sm font-medium text-gray-700">File PDF</label>
+                <input type="file" name="pdf_file" id="pdf_file" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none  focus:ring-blue-500" required>
+                {% if form.pdf_file.errors %}
+                    <div class="text-sm text-red-500 mt-1">
+                        {% for error in form.pdf_file.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
 
-            <!-- Judul Buku -->
+            <div class="mb-4">
+                <label for="cover_image" class="block text-sm font-medium text-gray-700">Cover Image</label>
+                <input type="file" name="cover_image" id="cover_image" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+            </div>
+
             <div class="mb-4">
                 <label for="title" class="block text-sm font-medium text-gray-700">Judul Buku</label>
-                <input type="text" name="title" id="title" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <input type="text" name="title" id="title" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none  focus:ring-blue-500" required>
                 {% if form.title.errors %}
                     <div class="text-sm text-red-500 mt-1">
                         {% for error in form.title.errors %}
@@ -23,10 +38,9 @@
                 {% endif %}
             </div>
 
-            <!-- Deskripsi Buku -->
             <div class="mb-4">
                 <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi Buku</label>
-                <textarea name="description" id="description" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" rows="4" required></textarea>
+                <textarea name="description" id="description" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none  focus:ring-blue-500" rows="4" required></textarea>
                 {% if form.description.errors %}
                     <div class="text-sm text-red-500 mt-1">
                         {% for error in form.description.errors %}
@@ -36,10 +50,9 @@
                 {% endif %}
             </div>
 
-            <!-- Penulis Buku -->
             <div class="mb-4">
                 <label for="author" class="block text-sm font-medium text-gray-700">Penulis</label>
-                <input type="text" name="author" id="author" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <input type="text" name="author" id="author" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none  focus:ring-blue-500" required>
                 {% if form.author.errors %}
                     <div class="text-sm text-red-500 mt-1">
                         {% for error in form.author.errors %}
@@ -49,10 +62,9 @@
                 {% endif %}
             </div>
 
-            <!-- Tahun Terbit -->
             <div class="mb-4">
                 <label for="publication_year" class="block text-sm font-medium text-gray-700">Tahun Terbit</label>
-                <input type="number" name="publication_year" id="publication_year" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <input type="number" name="publication_year" id="publication_year" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none  focus:ring-blue-500" required>
                 {% if form.publication_year.errors %}
                     <div class="text-sm text-red-500 mt-1">
                         {% for error in form.publication_year.errors %}
@@ -62,10 +74,9 @@
                 {% endif %}
             </div>
 
-            <!-- Genre Buku -->
             <div class="mb-4">
                 <label for="genre" class="block text-sm font-medium text-gray-700">Genre</label>
-                <input type="text" name="genre" id="genre" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <input type="text" name="genre" id="genre" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none  focus:ring-blue-500" required>
                 {% if form.genre.errors %}
                     <div class="text-sm text-red-500 mt-1">
                         {% for error in form.genre.errors %}
@@ -75,10 +86,9 @@
                 {% endif %}
             </div>
             
-            <!-- Jumlah Halaman -->
             <div class="mb-4">
                 <label for="page_count" class="block text-sm font-medium text-gray-700">Jumlah Halaman</label>
-                <input type="number" name="page_count" id="page_count" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <input type="number" name="page_count" id="page_count" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none  focus:ring-blue-500" required>
                 {% if form.page_count.errors %}
                     <div class="text-sm text-red-500 mt-1">
                         {% for error in form.page_count.errors %}
@@ -87,28 +97,10 @@
                     </div>
                 {% endif %}
             </div>
-
-            <div class="mb-4">
-                <label for="pdf_file" class="block text-sm font-medium text-gray-700">File PDF</label>
-                <input type="file" name="pdf_file" id="pdf_file" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                {% if form.pdf_file.errors %}
-                    <div class="text-sm text-red-500 mt-1">
-                        {% for error in form.pdf_file.errors %}
-                            <p>{{ error }}</p>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            </div>
-            <div class="mb-4">
-                <label for="cover_image" class="block text-sm font-medium text-gray-700">Cover Image</label>
-                <input type="file" name="cover_image" id="cover_image" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
-            </div>
-
-
             <div class="flex justify-end space-x-4 mt-6">
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm">Upload Buku</button>
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700  focus:ring-blue-500 focus:outline-none text-sm">Upload Buku</button>
             
-                <a href="{% url 'katalog' %}" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400 focus:ring-2 focus:ring-gray-500 focus:outline-none text-sm">Kembali ke Katalog</a>
+                <a href="{% url 'katalog' %}" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400  focus:ring-gray-500 focus:outline-none text-sm">Kembali</a>
             </div>            
         </form>
     </div>
