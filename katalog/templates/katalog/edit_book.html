@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load static %}
+<div class="container mx-auto p-6">
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h1 class="font-bold text-3xl mb-4">Edit Buku: {{ book.title }}</h1>
+        
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg">Simpan Perubahan</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

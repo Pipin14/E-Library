@@ -17,6 +17,9 @@ urlpatterns = [
     path('toggle-favorite/<int:book_id>/', views.toggle_favorite, name='toggle_favorite'),
     
     path('book/<int:book_id>/', views.book_detail, name='book_detail'),
+    path('book/edit/<int:book_id>/', views.edit_book, name='edit_book'),
+    path('book/delete/<int:book_id>/', views.delete_book, name='delete_book'),
+    path('book/analyze/<int:book_id>/', views.analyze_book, name='analyze_book'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

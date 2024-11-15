@@ -17,3 +17,8 @@ class BookUploadForm(forms.ModelForm):
             logger.debug(f"Buku berhasil disimpan dengan ID: {instance.id}")
         
         return instance
+
+class BookForm(forms.ModelForm):
+    class Meta:
+        model = Book
+        fields = ['cover_image', 'title', 'description', 'author', 'genre', 'publication_year', 'page_count']

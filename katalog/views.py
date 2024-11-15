@@ -4,8 +4,11 @@ from django.contrib.auth.decorators import login_required
 from .forms import BookUploadForm
 from django.http import JsonResponse
 from .models import Book, Favorite
-import logging
+from .forms import BookForm
+from django.contrib import messages
+from katalog.utils import analyze_text
 
+import logging
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +24,7 @@ def katalog_view(request):
     books = Book.objects.all()
     return render(request, 'katalog/katalog.html', {'books': books})
 
-
+@login_required
 def book_list(request):
     books = Book.objects.all()
     print(books)
@@ -57,21 +60,62 @@ def toggle_favorite(request, book_id):
     
     return redirect(request.META.get('HTTP_REFERER', 'katalog'))
 
-
-from django.shortcuts import render, get_object_or_404
-from .models import Book
-
+@login_required
 def book_detail(request, book_id):
-    # Ambil buku berdasarkan ID
     book = get_object_or_404(Book, id=book_id)
-
-    # Ambil kata-kata relevan untuk analisis (sesuaikan dengan implementasi Anda)
-    relevant_words = ["contoh", "kata", "relevan"]  # Anda bisa mengganti dengan logika analisis Anda
-
-    # Kirimkan context ke template
+    relevant_words = ["contoh", "kata", "relevan"]  
     context = {
         'book': book,
         'relevant_words': relevant_words,
     }
 
     return render(request, 'katalog/book_detail.html', context)
+
+@login_required
+def edit_book(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    
+    if request.method == 'POST':
+        form = BookForm(request.POST, request.FILES, instance=book)
+        if form.is_valid():
+            form.save()
+            return redirect('book_detail', book_id=book.id)
+    else:
+        form = BookForm(instance=book)
+    
+    return render(request, 'katalog/edit_book.html', {'form': form, 'book': book})
+
+# @login_required
+# def delete_book(request, book_id):
+#     book = get_object_or_404(Book, id=book_id)
+    
+#     if request.method == 'POST':
+#         book.delete()
+#         messages.success(request, f'Buku "{book.title}" berhasil dihapus.')
+#         return redirect('book_list')
+    
+#     return render(request, 'katalog', {'book': book})
+
+
+def delete_book(request, book_id):
+    # Ambil objek buku berdasarkan ID
+    book = get_object_or_404(Book, id=book_id)
+    
+    if request.method == 'POST':
+        # Hapus buku jika request POST
+        book.delete()
+        # Beri pesan sukses
+        messages.success(request, f'Buku "{book.title}" berhasil dihapus.')
+        # Redirect ke halaman katalog setelah penghapusan
+        return redirect('katalog')
+    
+    # Jika bukan POST, tampilkan halaman detail buku untuk konfirmasi
+    return render(request, 'book_detail.html', {'book': book})
+
+
+@login_required
+def analyze_book(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    relevant_words = analyze_text(book.description)  # Fungsi untuk analisis teks
+    
+    return render(request, 'katalog/analyze_book.html', {'book': book, 'relevant_words': relevant_words})
