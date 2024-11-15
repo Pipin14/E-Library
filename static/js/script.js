@@ -1,25 +1,5 @@
 /*************  Base.html JavaScript  *************/
 
-// Function to toggle mobile menu visibility    
-function toggleMobileMenu() {
-    const menu = document.getElementById('mobileMenu');
-    menu.classList.toggle('hidden');
-}
-
-// Function to toggle dropdown for user profile
-function toggleDropdown() {
-    const dropdown = document.getElementById('profileDropdown');
-    dropdown.classList.toggle('hidden');
-}
-
-// Close dropdown when screen is resized to desktop
-window.addEventListener('resize', function() {
-    const dropdown = document.getElementById('profileDropdown');
-    if (window.innerWidth >= 1024) {
-        dropdown.classList.add('hidden');
-    }
-});
-
 
 /*************  Login.html JavaScript  *************/
 // Handle show/hide password toggle

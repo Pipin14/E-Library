@@ -13,5 +13,7 @@ urlpatterns = [
     path('katalog/', views.katalog_view, name='katalog'),
     path('', book_list, name='book_list'),
     path('upload/', upload_book, name='upload_book'),
+    path('favorit/', include('favorit.urls')),
+    path('toggle-favorite/<int:book_id>/', views.toggle_favorite, name='toggle_favorite'),
 
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
