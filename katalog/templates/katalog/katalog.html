@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}Katalog Buku{% endblock %}
+
+{% block content %}
+<div class="max-w-screen-2xl">
+    <h2 class="text-2xl font-bold mb-4">Katalog Buku</h2>
+    <!-- Filter Katalog -->
+    <div class="flex justify-between items-center mb-4">
+        <div>
+            <label for="favoriteFilter" class="mr-2">Filter Favorit:</label>
+            <select id="favoriteFilter" class="px-4 py-2 border rounded-lg">
+                <option value="all">Semua</option>
+                <option value="favorite">Favorit</option>
+                <option value="notFavorite">Bukan Favorit</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Daftar Buku -->
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <!-- Item Buku 1 -->
+        <div class="bg-white p-4 rounded-lg shadow-md">
+            {% load static %}
+            <img src="{% static 'assets/buku1.jpg' %}" alt="Cover Buku" class="w-full h-40 object-cover rounded-md mb-4">
+            <h3 class="font-bold text-lg">Judul Buku 1</h3>
+            <p class="text-sm text-gray-600 mb-4">Deskripsi singkat buku ini. Dapatkan informasi lebih lanjut dengan membaca buku ini...</p>
+            <div class="flex justify-between items-center">
+                <button class="text-yellow-500 bookmark-btn" data-id="1">
+                    <!-- Bookmark Icon -->
+                </button>
+                <span class="text-sm text-gray-500">Genre: Fiksi</span>
+            </div>
+        </div>
+        <!-- Item Buku 2 -->
+        <div class="bg-white p-4 rounded-lg shadow-md">
+            <img src="{% static 'assets/buku1.jpg' %}" alt="Cover Buku" class="w-full h-40 object-cover rounded-md mb-4">
+            <h3 class="font-bold text-lg">Judul Buku 2</h3>
+            <p class="text-sm text-gray-600 mb-4">Deskripsi singkat buku ini. Dapatkan informasi lebih lanjut dengan membaca buku ini...</p>
+            <div class="flex justify-between items-center">
+                <button class="text-yellow-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </button>
+                <span class="text-sm text-gray-500">Genre: Non-Fiksi</span>
+            </div>
+        </div>
+
+        <!-- Item Buku 3 -->
+        <div class="bg-white p-4 rounded-lg shadow-md">
+            <img src="{% static 'assets/buku1.jpg' %}" alt="Cover Buku" class="w-full h-40 object-cover rounded-md mb-4">
+            <h3 class="font-bold text-lg">Judul Buku 3</h3>
+            <p class="text-sm text-gray-600 mb-4">Deskripsi singkat buku ini. Dapatkan informasi lebih lanjut dengan membaca buku ini...</p>
+            <div class="flex justify-between items-center">
+                <button class="text-yellow-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </button>
+                <span class="text-sm text-gray-500">Genre: Misteri</span>
+            </div>
+        </div>
+
+        <!-- Item Buku 4 -->
+        <div class="bg-white p-4 rounded-lg shadow-md">
+            <img src="{% static 'assets/buku1.jpg' %}" alt="Cover Buku" class="w-full h-40 object-cover rounded-md mb-4">
+            <h3 class="font-bold text-lg">Judul Buku 4</h3>
+            <p class="text-sm text-gray-600 mb-4">Deskripsi singkat buku ini. Dapatkan informasi lebih lanjut dengan membaca buku ini...</p>
+            <div class="flex justify-between items-center">
+                <button class="text-yellow-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </button>
+                <span class="text-sm text-gray-500">Genre: Teknologi</span>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex justify-center items-center mt-8 space-x-2">
+        <button id="firstPage" class="px-3 py-1 bg-gray-200 rounded-lg text-gray-700 text-sm" onclick="goToFirstPage()">First</button>
+        <button id="prevPage" class="px-3 py-1 bg-gray-200 rounded-lg text-gray-700 text-sm" onclick="goToPrevPage()">Prev</button>
+        <span id="pageStatus" class="text-gray-500 text-sm">Page 1 of 5</span>
+        <button id="nextPage" class="px-3 py-1 bg-gray-200 rounded-lg text-gray-700 text-sm" onclick="goToNextPage()">Next</button>
+        <button id="lastPage" class="px-3 py-1 bg-gray-200 rounded-lg text-gray-700 text-sm" onclick="goToLastPage()">Last</button>
+    </div>
+    
+    <script src="{% static 'js/pagination.js' %}"></script>
+</div>
+{% endblock %}

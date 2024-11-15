@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Profile User{% endblock %}
+
+{% block content %}
+    <div class="max-w-md w-full p-8 bg-white shadow-lg rounded-lg mx-auto mt-10">
+        <h2 class="text-2xl font-bold text-center mb-6">Profile User</h2>
+
+        {% if messages %}
+            <div class="mb-4">
+                {% for message in messages %}
+                    <div class="bg-green-100 text-green-700 p-3 rounded-md mb-2">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="flex items-center justify-center mb-6">
+            <div class="w-24 h-24 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
+                {% if user.profile.profile_picture %}
+                    <img src="{{ user.profile.profile_picture.url }}" alt="Foto Profil" class="w-full h-full object-cover">
+                {% else %}
+                    <img src="{% static 'assets/default-avatar.png' %}" alt="Default Avatar" class="w-full h-full object-cover">
+                {% endif %}
+            </div>
+        </div>
+        <div class="mb-4">
+            <p><strong>Nama:</strong> {{ user.first_name }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+        </div>
+
+        <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <a href="{% url 'edit_profile' %}" class="block bg-blue-500 text-white py-2 px-6 rounded-lg text-center hover:bg-blue-600 transition duration-300 ease-in-out transform hover:scale-105 shadow-md">
+                Edit Profil
+            </a>
+            <a href="{% url 'change_password' %}" class="block bg-green-500 text-white py-2 px-6 rounded-lg text-center hover:bg-green-600 transition duration-300 ease-in-out transform hover:scale-105 shadow-md">
+                Ubah Password
+            </a>
+        </div>
+
+        <div class="flex justify-center space-x-4 mt-6">
+            <!-- <a href="{% url 'logout' %}" class="inline-block bg-red-500 text-white py-2 px-6 rounded-lg text-center hover:bg-red-600 transition duration-300 ease-in-out transform hover:scale-105 shadow-lg hover:shadow-xl">
+                Logout
+            </a> -->
+            <a href="{% url 'katalog' %}" class="inline-block bg-gray-300 text-gray-800 py-2 px-6 rounded-lg text-center hover:bg-gray-400 transition duration-300 ease-in-out transform hover:scale-105">
+                Kembali ke Beranda
+            </a>
+        </div>
+    </div>
+{% endblock %}
