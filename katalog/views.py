@@ -190,7 +190,7 @@ def analyze_book(request, book_id):
     combined_text = f"{book.description} {pdf_text}"
     relevant_words = analyze_text(combined_text)
 
-    return render(request, 'katalog/analyze_book.html', {
+    return render(request, 'katalog/book_detail.html', {
         'book': book,
         'relevant_words': relevant_words
     })

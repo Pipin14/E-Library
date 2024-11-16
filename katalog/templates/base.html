@@ -143,7 +143,7 @@
     <div class="flex-grow">
         <div class="max-w-screen-2xl mx-4 p-4">
             {% block content %}
-            
+
             {% endblock %}
         </div>
     </div>
@@ -153,39 +153,7 @@
             <p class="text-center">&copy; 2024 E-Library by Pipin Yuliyanto. All rights reserved.</p>
         </div>
     </footer>
-
-    <script>
-        const hamburgerButton = document.getElementById('hamburgerButton');
-        const mobileMenu = document.getElementById('mobileMenu');
-
-        hamburgerButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        function toggleMobileDropdown() {
-            const dropdown = document.getElementById('mobileProfileDropdown');
-            dropdown.classList.toggle('hidden');
-        }
-
-        function toggleDesktopDropdown() {
-            const dropdown = document.getElementById('desktopProfileDropdown');
-            dropdown.classList.toggle('hidden');
-        }
-
-        document.addEventListener('click', function(event) {
-            const mobileDropdown = document.getElementById('mobileProfileDropdown');
-            const desktopDropdown = document.getElementById('desktopProfileDropdown');
-            const avatarButtonMobile = document.querySelector('button[onclick="toggleMobileDropdown()"]');
-            const avatarButtonDesktop = document.querySelector('button[onclick="toggleDesktopDropdown()"]');
-
-            if (!mobileDropdown.contains(event.target) && !avatarButtonMobile.contains(event.target)) {
-                mobileDropdown.classList.add('hidden');
-            }
-
-            if (!desktopDropdown.contains(event.target) && !avatarButtonDesktop.contains(event.target)) {
-                desktopDropdown.classList.add('hidden');
-            }
-        });
-    </script>
+    
+    <script src="{% static 'js/base.js' %}"></script>
 </body>
 </html>
