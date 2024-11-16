@@ -67,7 +67,15 @@
                             {% else %}
                                 <img src="{% static 'assets/default-avatar.png' %}" alt="Avatar Default" class="w-8 h-8 rounded-full">
                             {% endif %}
-                            <span class="ml-2">{{ user.first_name }}</span>
+                            <span class="ml-2">
+                                {% if user.first_name %}
+                                  {{ user.first_name }}
+                                {% else %}
+                                    <span class="text-red-500 font-semibold">
+                                        Lengkapi Nama Anda<i class="fas fa-exclamation-circle"></i>
+                                    </span>
+                                {% endif %}
+                              </span>
                         </button>
                         <div id="desktopProfileDropdown" class="hidden absolute top-full right-0 mt-2 w-48 bg-white text-black shadow-lg rounded-lg z-50">
                             <nav>
