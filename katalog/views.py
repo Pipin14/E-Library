@@ -1,20 +1,51 @@
+import os
 import fitz
+import spacy
 import logging
-from .models import Book
+from collections import Counter
 from django.shortcuts import render, get_object_or_404, redirect
-from django.shortcuts import render
-from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .forms import BookUploadForm
 from .models import Book, Favorite
-from .forms import BookForm
+from .forms import BookUploadForm, BookForm
 from django.contrib import messages
-from katalog.utils import analyze_text
-from django.db.models import Q
 from django.core.paginator import Paginator
+from django.db.models import Q
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
 
 logger = logging.getLogger(__name__)
 
+
+import spacy
+from collections import Counter
+
+# Load model multibahasa
+nlp = spacy.load("xx_ent_wiki_sm")
+
+def analyze_text(text):
+    doc = nlp(text.lower())
+    
+    filtered_words = [token.text for token in doc if token.is_alpha]
+    
+    word_counts = Counter(filtered_words)
+    most_common_words = [word for word, count in word_counts.most_common(20)]
+    
+    return most_common_words
+
+
+# Fungsi untuk ekstraksi teks dari PDF
+def extract_text_from_pdf(pdf_path):
+    try:
+        doc = fitz.open(pdf_path)
+        text = ""
+        for page_num in range(len(doc)):
+            page = doc.load_page(page_num)
+            text += page.get_text()
+        doc.close()
+        return text
+    except Exception as e:
+        logger.error(f"Error dalam ekstraksi teks: {str(e)}")
+        return ""
 
 @login_required
 def katalog(request):
@@ -128,54 +159,60 @@ def edit_book(request, book_id):
     return render(request, 'katalog/edit_book.html', {'form': form, 'book': book})
 
 
+@login_required
 def delete_book(request, book_id):
     # Ambil objek buku berdasarkan ID
     book = get_object_or_404(Book, id=book_id)
 
     if request.method == 'POST':
-        # Hapus buku jika request POST
         book.delete()
-        # Beri pesan sukses
         messages.success(request, f'Buku "{book.title}" berhasil dihapus.')
-        # Redirect ke halaman katalog setelah penghapusan
         return redirect('katalog')
 
-    # Jika bukan POST, tampilkan halaman detail buku untuk konfirmasi
     return render(request, 'book_detail.html', {'book': book})
 
 
 @login_required
 def analyze_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
-    # Fungsi untuk analisis teks
-    relevant_words = analyze_text(book.description)
+    
+    if not book.pdf_file:
+        messages.error(request, 'File PDF tidak tersedia untuk buku ini.')
+        return redirect('katalog')
 
-    return render(request, 'katalog/analyze_book.html', {'book': book, 'relevant_words': relevant_words})
+    pdf_path = book.pdf_file.path
 
+    if not os.path.exists(pdf_path):
+        messages.error(request, 'File PDF tidak ditemukan di server.')
+        return redirect('katalog')
+
+    pdf_text = extract_text_from_pdf(pdf_path)
+    combined_text = f"{book.description} {pdf_text}"
+    relevant_words = analyze_text(combined_text)
+
+    return render(request, 'katalog/analyze_book.html', {
+        'book': book,
+        'relevant_words': relevant_words
+    })
 
 @login_required
 def preview_book(request, book_id, page_number=1):
     book = get_object_or_404(Book, id=book_id)
     pdf_path = book.pdf_file.path
 
-    # Membuka PDF dengan PyMuPDF
     doc = fitz.open(pdf_path)
     total_pages = doc.page_count
 
-    # Pastikan page_number valid
     if page_number < 1:
         page_number = 1
     elif page_number > total_pages:
         page_number = total_pages
 
-    # Mengonversi halaman PDF menjadi gambar
-    # PyMuPDF page indexing starts from 0
     page = doc.load_page(page_number - 1)
     pix = page.get_pixmap()
     img_path = f"media/preview_images/{book.id}_page_{page_number}.png"
     pix.save(img_path)
 
-    # Menyusun URL untuk Previous dan Next buttons
     prev_page = page_number - 1 if page_number > 1 else None
     next_page = page_number + 1 if page_number < total_pages else None
 
