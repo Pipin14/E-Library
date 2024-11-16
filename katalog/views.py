@@ -130,7 +130,7 @@ def toggle_favorite(request, book_id):
 @login_required
 def book_detail(request, book_id):
     book = get_object_or_404(Book, id=book_id)
-    relevant_words = ["contoh", "kata", "relevan"]
+    relevant_words = ["kata relevan", "kata yang relevan"]
     context = {
         'book': book,
         'relevant_words': relevant_words,
