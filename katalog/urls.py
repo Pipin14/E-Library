@@ -14,7 +14,7 @@ urlpatterns = [
     path('', book_list, name='book_list'),
     path('upload/', upload_book, name='upload_book'),
     path('favorit/', include('favorit.urls')),
-    path('toggle-favorite/<int:book_id>/', views.toggle_favorite, name='toggle_favorite'),
+    path('favorit/toggle-favorite/<int:book_id>/', views.toggle_favorite, name='toggle_favorite'),
     
     path('book/<int:book_id>/', views.book_detail, name='book_detail'),
     path('book/edit/<int:book_id>/', views.edit_book, name='edit_book'),

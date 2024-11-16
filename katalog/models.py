@@ -30,10 +30,8 @@ class Book(models.Model):
 
 
 class Favorite(models.Model):
-    
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='katalog_favorite_set')
+    book = models.ForeignKey('Book', on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.user.username} - {self.book.title}"
+        return f"{self.user} - {self.book.title}"

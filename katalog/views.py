@@ -110,9 +110,13 @@ def upload_book(request):
 
 @login_required
 def toggle_favorite(request, book_id):
-    book = get_object_or_404(Book, id=book_id)
-    favorite, created = Favorite.objects.get_or_create(
-        user=request.user, book=book)
+    try:
+        book = get_object_or_404(Book, id=book_id)
+    except Exception as e:
+        logger.error(f"Error fetching book with id {book_id}: {e}")
+        raise
+
+    favorite, created = Favorite.objects.get_or_create(user=request.user, book=book)
 
     if not created:
         favorite.delete()

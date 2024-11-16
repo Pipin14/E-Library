@@ -25,15 +25,11 @@ def favorite_books(request):
 
 @login_required
 def toggle_favorite(request, book_id):
-    # Ambil objek Book berdasarkan ID
     book = get_object_or_404(Book, id=book_id)
 
-    # Cek apakah sudah ada entry favorit untuk buku ini dan user yang bersangkutan
     favorite, created = Favorite.objects.get_or_create(user=request.user, book=book)
 
-    # Jika sudah ada, maka hapus
     if not created:
         favorite.delete()
 
-    # Kembali ke halaman sebelumnya
     return redirect(request.META.get('HTTP_REFERER', 'katalog'))
