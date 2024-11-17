@@ -39,5 +39,14 @@
                 </div>
             {% endfor %}
         </div>
+        <div class="flex justify-center items-center mt-8 space-x-2">
+            <button id="firstPage" class="px-3 py-1 bg-gray-200 rounded-lg text-gray-700 text-sm" {% if books.has_previous %}onclick="goToFirstPage()" {% else %}disabled{% endif %}>First</button>
+            <button id="prevPage" class="px-3 py-1 bg-gray-200 rounded-lg text-gray-700 text-sm" {% if books.has_previous %}onclick="goToPrevPage()" {% else %}disabled{% endif %}>Prev</button>
+            <span id="pageStatus" class="text-gray-500 text-sm">Page {{ books.number }} of {{ books.paginator.num_pages }}</span>
+            <button id="nextPage" class="px-3 py-1 bg-gray-200 rounded-lg text-gray-700 text-sm" {% if books.has_next %}onclick="goToNextPage()" {% else %}disabled{% endif %}>Next</button>
+            <button id="lastPage" class="px-3 py-1 bg-gray-200 rounded-lg text-gray-700 text-sm" {% if books.has_next %}onclick="goToLastPage()" {% else %}disabled{% endif %}>Last</button>
+        </div>
     </div>
+    </div>
+    <script src="{% static 'js/katalog.js' %}"></script>
 {% endblock %}

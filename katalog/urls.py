@@ -15,15 +15,13 @@ urlpatterns = [
     path('upload/', upload_book, name='upload_book'),
     path('favorit/', include('favorit.urls')),
     path('favorit/<int:id>/', views.toggle_favorite, name='toggle_favorite'),
-    # path('favorit/toggle/<int:id>/', views.toggle_favorite, name='toggle_favorite'),
-    
     path('book/<int:book_id>/', views.book_detail, name='book_detail'),
     path('book/edit/<int:book_id>/', views.edit_book, name='edit_book'),
     path('book/delete/<int:book_id>/', views.delete_book, name='delete_book'),
     path('book/analyze/<int:book_id>/', views.analyze_book, name='analyze_book'),
 
-    path('book/<int:book_id>/preview/<int:page_number>/', views.preview_book, name='preview_book'),
+    path('book/<int:book_id>/preview/<int:page_number>/',
+         views.preview_book, name='preview_book'),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
