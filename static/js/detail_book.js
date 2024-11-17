@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    
     document.getElementById('deleteButtonMain').addEventListener('click', function(event) {
         event.preventDefault();
         document.getElementById('deleteModal').classList.remove('hidden');
@@ -73,23 +74,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let currentPage = 1;
     let pdfDoc = null;
-    let bookPdfUrl = ''; // Variabel untuk menyimpan URL PDF
+    let bookPdfUrl = '';
 
-    // Menangani klik pada tombol Preview
     previewButton.addEventListener('click', function () {
         bookPdfUrl = this.getAttribute('data-pdf-url');
         console.log("Preview button clicked, URL:", bookPdfUrl);
         
-        // Menambahkan query parameter timestamp untuk menghindari cache
-        const timestamp = new Date().getTime(); // Mendapatkan timestamp saat ini
-        const updatedPdfUrl = `${bookPdfUrl}?t=${timestamp}`; // Menambahkan parameter waktu pada URL PDF
+        const timestamp = new Date().getTime();
+        const updatedPdfUrl = `${bookPdfUrl}?t=${timestamp}`;
 
-        previewModal.classList.remove('hidden'); // Menampilkan modal
-        currentPage = 1; // Reset halaman ke 1
-        loadPdfPage(updatedPdfUrl, currentPage); // Menampilkan halaman pertama dengan file PDF yang terbaru
+        previewModal.classList.remove('hidden');
+        currentPage = 1;
+        loadPdfPage(updatedPdfUrl, currentPage);
     });
 
-    // Menangani klik pada tombol Previous
     previousButton.addEventListener('click', function () {
         if (currentPage > 1) {
             currentPage--;
@@ -97,7 +95,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Menangani klik pada tombol Next
     nextButton.addEventListener('click', function () {
         if (currentPage < pdfDoc.numPages) {
             currentPage++;
@@ -105,45 +102,38 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Menangani klik pada tombol Close (untuk menutup modal)
     closePreviewButton.addEventListener('click', function () {
-        previewModal.classList.add('hidden'); // Menyembunyikan modal
+        previewModal.classList.add('hidden');
     });
 
-    // Fungsi untuk memuat halaman PDF
     function loadPdfPage(bookPdfUrl, pageNumber) {
-        // Pastikan dokumen PDF di-reload setiap kali file PDF berubah
         pdfjsLib.getDocument(bookPdfUrl).promise.then(function (pdfDoc_) {
-            pdfDoc = pdfDoc_; // Menyimpan dokumen PDF yang dimuat
-            renderPage(pageNumber); // Merender halaman yang diminta
+            pdfDoc = pdfDoc_;
+            renderPage(pageNumber);
         }).catch(function (error) {
             console.error('Error loading PDF: ', error);
         });
     }
 
-    // Fungsi untuk merender halaman PDF ke canvas
     function renderPage(pageNumber) {
         pdfDoc.getPage(pageNumber).then(function (page) {
-            const scale = 1.5; // Menyesuaikan skala rendering
+            const scale = 1.5;
             const viewport = page.getViewport({ scale: scale });
             const context = pdfPreview.getContext('2d');
             pdfPreview.height = viewport.height;
             pdfPreview.width = viewport.width;
 
-            // Merender halaman PDF pada canvas
             page.render({
                 canvasContext: context,
                 viewport: viewport
             });
 
-            // Memperbarui status tombol navigasi
             updateNavigationButtons(pageNumber);
         });
     }
 
-    // Fungsi untuk memperbarui status tombol navigasi
     function updateNavigationButtons(pageNumber) {
-        previousButton.disabled = (pageNumber <= 1); // Tombol Previous dinonaktifkan jika di halaman pertama
-        nextButton.disabled = (pageNumber >= pdfDoc.numPages); // Tombol Next dinonaktifkan jika di halaman terakhir
+        previousButton.disabled = (pageNumber <= 1);
+        nextButton.disabled = (pageNumber >= pdfDoc.numPages);
     }
 });

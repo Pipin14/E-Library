@@ -1,10 +1,11 @@
+<!-- favorit_buku.html -->
 {% extends 'base.html' %}
 
 {% block title %}Buku Favorit{% endblock %}
 
 {% block content %}
     <h1 class="text-3xl font-bold mb-4 text-left">Buku Favorit</h1>
-    
+
     <div class="flex items-center justify-center min-h-screen">
         {% load static %}
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full max-w-7xl">
@@ -21,9 +22,6 @@
                     <p class="text-center text-gray-500 col-span-full font-bold">Tidak ada buku yang difavoritkan tersimpan.</p>
                 </div>
             {% endfor %}
-
         </div>
     </div>
-
-    <script src="{% static 'js/bookmark.js' %}"></script>
 {% endblock %}

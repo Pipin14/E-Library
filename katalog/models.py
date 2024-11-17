@@ -9,12 +9,12 @@ logger = logging.getLogger(__name__)
 class Book(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
-    author = models.CharField(max_length=200)
-    genre = models.CharField(max_length=100)
+    author = models.CharField(max_length=100)
     publication_year = models.IntegerField()
+    genre = models.CharField(max_length=100)
     page_count = models.IntegerField()
-    cover_image = models.ImageField(upload_to='books/covers/', blank=True, null=True)
-    pdf_file = models.FileField(upload_to='books/pdf', blank=True, null=True)
+    pdf_file = models.FileField(upload_to='books/', blank=True, null=True)
+    cover_image = models.ImageField(upload_to='covers/', blank=True, null=True)
     is_favorite = models.BooleanField(default=False)
 
     def __str__(self):
@@ -30,8 +30,10 @@ class Book(models.Model):
 
 
 class Favorite(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='katalog_favorite_set')
-    book = models.ForeignKey('Book', on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='katalog_user_favorites')
+    book = models.ForeignKey(
+        Book, on_delete=models.CASCADE, related_name='katalog_books')
 
     def __str__(self):
-        return f"{self.user} - {self.book.title}"
+        return f'{self.user} - {self.book}'
