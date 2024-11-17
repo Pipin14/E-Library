@@ -29,7 +29,7 @@
             <div class="flex justify-between items-center">
                 <form action="{% url 'toggle_favorite' book.id %}" method="POST">
                     {% csrf_token %}
-                    <button type="submit" class="text-yellow-500 bookmark-btn">
+                    <button type="submit" class="text-yellow-500 bookmark-btn" data-id="{{ book.id }}">
                         {% if book.is_favorite %}
                             <i class="fas fa-star"></i>
                         {% else %}
