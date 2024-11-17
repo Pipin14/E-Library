@@ -23,7 +23,9 @@
         <div class="bg-white p-4 rounded-lg shadow-md flex flex-col justify-between h-full">
             <img src="{% if book.cover_image %}{{ book.cover_image.url }}{% else %}{% static 'assets/default-cover.jpg' %}{% endif %}" 
                 alt="Cover Buku" class="w-full h-40 object-cover rounded-md mb-3">
-            <h3 class="font-bold text-lg">{{ book.title }}</h3>
+                <h3 class="font-bold text-lg">
+                    {{ book.title|slice:":60" }}{% if book.title|length > 60 %}...{% endif %}
+                </h3>                
             <p class="text-sm text-gray-600 mb-3">{{ book.description|truncatewords:20 }}</p>
             
             <div class="flex justify-between items-center">

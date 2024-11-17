@@ -1,10 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Toggle deskripsi (short description & full description)
-    function toggleDescription() {
-        var shortDescription = document.getElementById("short-description");
-        var fullDescription = document.getElementById("full-description");
-        var btnText = document.getElementById("read-more-text");
-        var arrowIcon = document.getElementById("arrow-icon");
+    function toggleDescription(bookId) {
+        var shortDescription = document.getElementById("short-description-" + bookId);
+        var fullDescription = document.getElementById("full-description-" + bookId);
+        var btnText = document.getElementById("read-more-text-" + bookId);
+        var arrowIcon = document.getElementById("arrow-icon-" + bookId);
 
         if (fullDescription.classList.contains("hidden")) {
             shortDescription.classList.add("hidden");
@@ -19,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Pastikan elemen-elemen modal delete ada
+    // Event listeners for the "delete" modal
     const deleteButtonMain = document.getElementById('deleteButtonMain');
     const cancelButton = document.getElementById('cancelButton');
     const confirmDeleteButton = document.getElementById('confirmDeleteButton');
@@ -41,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Pastikan elemen-elemen preview ada
+    // PDF Preview functions
     const previewModal = document.getElementById("previewModal");
     const previewButton = document.getElementById("previewButton");
     const closePreviewButton = document.getElementById("closePreviewButton");
@@ -58,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
         !pdfPreview
     ) {
         console.error("One or more required elements are not found in the DOM.");
-        return; // Berhenti jika ada elemen yang tidak ditemukan
+        return;
     }
 
     let pdfDoc = null;
@@ -135,9 +134,12 @@ document.addEventListener("DOMContentLoaded", function () {
         nextButton.disabled = pageNumber >= pdfDoc.numPages;
     }
 
-    // Event listener untuk toggle description jika ada tombolnya
-    const readMoreButton = document.getElementById('read-more');
-    if (readMoreButton) {
-        readMoreButton.addEventListener('click', toggleDescription);
-    }
+    // Event listeners for the "read more" button
+    const readMoreButtons = document.querySelectorAll('.read-more-btn');
+    readMoreButtons.forEach(button => {
+        const bookId = button.getAttribute('data-book-id');
+        button.addEventListener('click', function () {
+            toggleDescription(bookId);
+        });
+    });
 });
