@@ -11,14 +11,6 @@ Aplikasi E-Library yang memungkinkan pengguna untuk melihat katalog buku, mengak
 - **Analisis Buku**: Menghitung dan menampilkan analisis terkait buku, seperti kata-kata relevan.
 - **Manajemen Buku**: Admin dapat menambahkan, mengedit, dan menghapus buku.
 
-## Teknologi yang Digunakan
-
-- **Django**: Framework web Python untuk backend.
-- **HTML/CSS**: Struktur dan styling halaman.
-- **JavaScript**: Untuk interaksi pengguna, seperti preview buku dan navigasi PDF.
-- **Bootstrap**: Framework CSS untuk responsivitas dan desain.
-- **CanvasJS / PDF.js**: Untuk menampilkan preview buku dalam format PDF.
-- **SQLite** (default) / **PostgreSQL**: Untuk database.
 
 ## Instalasi
 
@@ -61,23 +53,23 @@ Aplikasi E-Library yang memungkinkan pengguna untuk melihat katalog buku, mengak
 3. **Instal dependensi::**
    ```bash
    pip install -r requirements.txt
-
-Install manual jika masih ada yang belum terinstall
+   ```
+   Install manual jika masih ada yang belum terinstall
 
 4. **Siapkan database:**
    ```bash
    python manage.py makemigration
+   ```
    or
+   
    ```bash
    python manage.py makemigration
 
-5.Jalankan server:
+5. **Jalankan server:**
    ```bash
    python manage.py runserver
    ```
-
-
-
+   Server akan berjalan di http://127.0.0.1:8000/
 
 
 
