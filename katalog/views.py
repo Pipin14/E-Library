@@ -98,7 +98,7 @@ def katalog_view(request):
     elif favorite_filter == 'notFavorite':
         books = books.filter(is_favorite=False)
 
-    paginator = Paginator(books, 8)
+    paginator = Paginator(books, 2)
     page_number = request.GET.get('page') or 1
     books_page = paginator.get_page(page_number)
     context = {

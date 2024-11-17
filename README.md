@@ -1,4 +1,4 @@
-# E-Library Project
+# E-Library
 
 Aplikasi E-Library yang memungkinkan pengguna untuk melihat katalog buku, mengakses detail buku, dan melakukan preview terhadap buku dalam format PDF. Pengguna dapat menambahkan buku ke daftar favorit, mengedit detail buku, dan menghapus buku dari sistem.
 

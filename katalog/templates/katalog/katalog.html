@@ -73,6 +73,33 @@
     </div>
 </div>
 
-<script src="{% static 'js/katalog.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    document.getElementById('favoriteFilter').addEventListener('change', function() {
+    this.form.submit();
+});
+
+function goToFirstPage() {
+    window.location.href = '?page=1';
+}
+
+function goToPrevPage() {
+    let currentPage = parseInt(new URLSearchParams(window.location.search).get('page')) || 1;
+    if (currentPage > 1) {
+        window.location.href = `?page=${currentPage - 1}`;
+    }
+}
+
+function goToNextPage() {
+    let currentPage = parseInt(new URLSearchParams(window.location.search).get('page')) || 1;
+    window.location.href = `?page=${currentPage + 1}`;
+}
+
+function goToLastPage() {
+    let totalPages = {{ books.paginator.num_pages }};
+    window.location.href = `?page=${totalPages}`;
+}
+</script>
 
 {% endblock %}
