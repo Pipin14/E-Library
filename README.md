@@ -28,6 +28,13 @@ Aplikasi E-Library yang memungkinkan pengguna untuk melihat katalog buku, mengak
 2. Django
 3. Pip (untuk instalasi dependensi)
 
+
+## Information User Login
+
+| Email | Password |
+| -------- | -------- |
+| admin@gmail.com   | Admin123    |
+
 ### Langkah Instalasi
 
 1. **Clone repository:**
@@ -35,4 +42,50 @@ Aplikasi E-Library yang memungkinkan pengguna untuk melihat katalog buku, mengak
    git clone https://github.com/username/e-library.git
    cd e-library
 
-2.
+2.Buat virtual environment:
+   ```bash
+   python -m venv venv
+    source venv/bin/activate
+    venv\Scripts\activate
+
+3. Instal dependensi:
+   ```bash
+
+   install manual jika masih ada yang belum terinstall
+4. Siapkan database:
+   ```bash
+   python manage.py makemigration
+   or
+   ```bash
+   python manage.py migrate
+
+5. Jalankan server:
+   ```bash
+   python manage.py runserver
+
+
+   ```bash
+   ```bash
+   ```bash
+   ```bash
+   ```bash
+   ```bash
+   ```bash
+   ```bash
+   ```bash
+   ```bash
+   ```bash
+
+
+
+
+
+
+
+
+
+
+
+
+
+
