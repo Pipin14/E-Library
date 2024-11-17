@@ -74,8 +74,7 @@ Install manual jika masih ada yang belum terinstall
 5.Jalankan server:
    ```bash
    python manage.py runserver
-
-
+   ```
 
 
 
