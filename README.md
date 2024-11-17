@@ -42,39 +42,38 @@ Aplikasi E-Library yang memungkinkan pengguna untuk melihat katalog buku, mengak
    git clone https://github.com/username/e-library.git
    cd e-library
 
-2.Buat virtual environment:
+1. **Clone repository:**
+   ```bash
+   git clone https://github.com/username/e-library.git
+   cd e-library
+
+1. **Clone repository:**
+   ```bash
+   git clone https://github.com/username/e-library.git
+   cd e-library
+
+2. **Clone repository:**
    ```bash
    python -m venv venv
-    source venv/bin/activate
-    venv\Scripts\activate
+   source venv/bin/activate
+   venv\Scripts\activate
 
-3. Instal dependensi:
+3. **Instal dependensi::**
    ```bash
+   pip install -r requirements.txt
 
-   install manual jika masih ada yang belum terinstall
-4. Siapkan database:
+Install manual jika masih ada yang belum terinstall
+
+4. **Siapkan database:**
    ```bash
    python manage.py makemigration
    or
    ```bash
-   python manage.py migrate
+   python manage.py makemigration
 
-5. Jalankan server:
+5.Jalankan server:
    ```bash
    python manage.py runserver
-
-
-   ```bash
-   ```bash
-   ```bash
-   ```bash
-   ```bash
-   ```bash
-   ```bash
-   ```bash
-   ```bash
-   ```bash
-   ```bash
 
 
 
