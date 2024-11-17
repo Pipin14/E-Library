@@ -24,16 +24,19 @@ logger = logging.getLogger(__name__)
 
 nlp = spacy.load("xx_ent_wiki_sm")
 
+
 def analyze_text(text):
     doc = nlp(text.lower())
-    
-    filtered_words = [token.text for token in doc if token.is_alpha and not token.is_stop]
+
+    filtered_words = [
+        token.text for token in doc if token.is_alpha and not token.is_stop]
 
     word_counts = Counter(filtered_words)
-    
+
     most_common_words = [word for word, count in word_counts.most_common(20)]
 
     return most_common_words
+
 
 def extract_text_from_pdf(pdf_path):
     try:
@@ -64,9 +67,9 @@ def analyze_book(request, book_id):
         return redirect('katalog')
 
     pdf_text = extract_text_from_pdf(pdf_path)
-    
+
     combined_text = f"{book.description} {pdf_text}"
-    
+
     relevant_words = analyze_text(combined_text)
 
     return render(request, 'katalog/book_detail.html', {
@@ -81,12 +84,21 @@ def katalog(request):
     return render(request, 'katalog/katalog.html', {'books': books})
 
 
+from django.shortcuts import render
+from django.db.models import Q
+from django.core.paginator import Paginator
+from .models import Book
+
 @login_required
 def katalog_view(request):
+    # Mendapatkan query pencarian dan filter favorit dari request GET
     query = request.GET.get('query', '').strip()
-    favorite_filter = request.GET.get('favorite', 'all')
+    favorite_filter = request.GET.get('favorite', 'all')  # Default filter: all
+
+    # Ambil semua buku
     books = Book.objects.all()
 
+    # Jika ada query pencarian, filter berdasarkan judul, deskripsi, dll
     if query:
         books = books.filter(
             Q(title__icontains=query) |
@@ -96,15 +108,18 @@ def katalog_view(request):
             Q(genre__icontains=query)
         )
 
+    # Menambahkan filter berdasarkan status favorit
     if favorite_filter == 'favorite':
         books = books.filter(is_favorite=True)
     elif favorite_filter == 'notFavorite':
         books = books.filter(is_favorite=False)
 
-    paginator = Paginator(books, 8)
-    page_number = request.GET.get('page') or 1
+    # Paginate hasil pencarian
+    paginator = Paginator(books, 8)  # Menampilkan 8 buku per halaman
+    page_number = request.GET.get('page') or 1  # Halaman default adalah 1
     books_page = paginator.get_page(page_number)
 
+    # Context untuk template
     context = {
         'books': books_page,
         'query': query,
@@ -189,13 +204,11 @@ def toggle_favorite(request, id):
         book = Book.objects.get(id=id)
     except Book.DoesNotExist:
         return HttpResponseBadRequest("No Book matches the given query.")
-    
+
     book.is_favorite = not book.is_favorite
     book.save()
 
     return redirect('katalog')
-
-
 
 
 @login_required
