@@ -43,18 +43,18 @@
                 <h1 class="font-bold text-3xl mb-6">{{ book.title }}</h1>
                 
                 <div class="flex items-center justify-between mb-6">
-                    <button class="text-yellow-500 bookmark-btn" data-id="{{ book.id }}">
-                        {% if book.is_favorite %}
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24" stroke="none">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"></path>
-                            </svg>
-                        {% else %}
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"></path>
-                            </svg>
-                        {% endif %}
-                    </button>                
+                    <form action="{% url 'toggle_favorite' book.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="text-yellow-500 bookmark-btn">
+                            {% if book.is_favorite %}
+                                <i class="fas fa-star text-3xl"></i>
+                            {% else %}
+                                <i class="far fa-star text-3xl"></i>
+                            {% endif %}
+                        </button>
+                    </form>
                 </div>
+                
 
                 <p class="text-lg text-gray-700 " id="book-description">
                     <span id="short-description"> {{ book.description|truncatewords:30 }} </span>
@@ -91,7 +91,6 @@
                         <p class="text-gray-600">Tidak ada kata relevan yang ditemukan.</p>
                     {% endif %}
                 </div>
-                
                 
                 <div class="flex justify-end space-x-4 mt-4">
                     <a href="{% url 'edit_book' book.id %}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 focus:ring-blue-500 focus:outline-none text-sm">Edit</a>

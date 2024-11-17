@@ -21,7 +21,6 @@ from .forms import BookForm
 
 logger = logging.getLogger(__name__)
 
-
 nlp = spacy.load("xx_ent_wiki_sm")
 
 
@@ -30,9 +29,7 @@ def analyze_text(text):
 
     filtered_words = [
         token.text for token in doc if token.is_alpha and not token.is_stop]
-
     word_counts = Counter(filtered_words)
-
     most_common_words = [word for word, count in word_counts.most_common(20)]
 
     return most_common_words
@@ -59,7 +56,6 @@ def analyze_book(request, book_id):
     if not book.pdf_file:
         messages.error(request, 'File PDF tidak tersedia untuk buku ini.')
         return redirect('katalog')
-
     pdf_path = book.pdf_file.path
 
     if not os.path.exists(pdf_path):
@@ -67,9 +63,7 @@ def analyze_book(request, book_id):
         return redirect('katalog')
 
     pdf_text = extract_text_from_pdf(pdf_path)
-
     combined_text = f"{book.description} {pdf_text}"
-
     relevant_words = analyze_text(combined_text)
 
     return render(request, 'katalog/book_detail.html', {
@@ -84,21 +78,12 @@ def katalog(request):
     return render(request, 'katalog/katalog.html', {'books': books})
 
 
-from django.shortcuts import render
-from django.db.models import Q
-from django.core.paginator import Paginator
-from .models import Book
-
 @login_required
 def katalog_view(request):
-    # Mendapatkan query pencarian dan filter favorit dari request GET
     query = request.GET.get('query', '').strip()
-    favorite_filter = request.GET.get('favorite', 'all')  # Default filter: all
-
-    # Ambil semua buku
+    favorite_filter = request.GET.get('favorite', 'all')
     books = Book.objects.all()
 
-    # Jika ada query pencarian, filter berdasarkan judul, deskripsi, dll
     if query:
         books = books.filter(
             Q(title__icontains=query) |
@@ -108,18 +93,14 @@ def katalog_view(request):
             Q(genre__icontains=query)
         )
 
-    # Menambahkan filter berdasarkan status favorit
     if favorite_filter == 'favorite':
         books = books.filter(is_favorite=True)
     elif favorite_filter == 'notFavorite':
         books = books.filter(is_favorite=False)
 
-    # Paginate hasil pencarian
-    paginator = Paginator(books, 8)  # Menampilkan 8 buku per halaman
-    page_number = request.GET.get('page') or 1  # Halaman default adalah 1
+    paginator = Paginator(books, 8)
+    page_number = request.GET.get('page') or 1
     books_page = paginator.get_page(page_number)
-
-    # Context untuk template
     context = {
         'books': books_page,
         'query': query,
@@ -148,7 +129,6 @@ def upload_book(request):
             if pdf_file:
                 book.pdf_file = pdf_file
                 book.save()
-
                 pdf_path = os.path.join(
                     settings.MEDIA_ROOT, book.pdf_file.name)
 
@@ -159,7 +139,6 @@ def upload_book(request):
                     img_data = pix.tobytes("png")
                     img_name = f"{book.id}_cover.png"
                     img_file = ContentFile(img_data)
-
                     book.cover_image.save(img_name, img_file, save=True)
                 except Exception as e:
                     messages.error(
@@ -182,15 +161,12 @@ def upload_book(request):
 def extract_cover_image_from_pdf(pdf_file):
     try:
         doc = fitz.open(pdf_file)
-
         page = doc.load_page(0)
         pix = page.get_pixmap()
-
         image_stream = BytesIO(pix.tobytes("png"))
         image = Image.open(image_stream)
         cover_image_name = f'books/covers/{pdf_file.name.replace(" ", "_")}_cover.png'
         cover_image_path = os.path.join(settings.MEDIA_ROOT, cover_image_name)
-
         image.save(cover_image_path)
         return InMemoryUploadedFile(image_stream, None, cover_image_name, 'image/png', image_stream.tell(), None)
 
@@ -232,15 +208,13 @@ def edit_book(request, book_id):
 
         if form.is_valid():
             book = form.save()
-
             pdf_file = request.FILES.get('pdf_file')
             if pdf_file:
                 book.pdf_file = pdf_file
                 book.save()
-
                 pdf_path = os.path.join(
                     settings.MEDIA_ROOT, book.pdf_file.name)
-
+                
                 try:
                     doc = fitz.open(pdf_path)
                     page = doc.load_page(0)
@@ -248,7 +222,6 @@ def edit_book(request, book_id):
                     img_data = pix.tobytes("png")
                     img_name = f"{book.id}_cover.png"
                     img_file = ContentFile(img_data)
-
                     book.cover_image.save(img_name, img_file, save=True)
                 except FileNotFoundError:
                     messages.error(
@@ -282,7 +255,6 @@ def delete_book(request, book_id):
 def preview_book(request, book_id, page_number=1):
     book = get_object_or_404(Book, id=book_id)
     pdf_path = book.pdf_file.path
-
     doc = fitz.open(pdf_path)
     total_pages = doc.page_count
 
@@ -295,15 +267,15 @@ def preview_book(request, book_id, page_number=1):
     pix = page.get_pixmap()
     img_path = f"media/preview_images/{book.id}_page_{page_number}.png"
     pix.save(img_path)
-
     all_img_paths = []
+
     for i in range(total_pages):
         page = doc.load_page(i)
         pix = page.get_pixmap()
         all_img_path = f"media/preview_images/{book.id}_page_{i + 1}.png"
         pix.save(all_img_path)
         all_img_paths.append(all_img_path)
-
+    
     prev_page = page_number - 1 if page_number > 1 else None
     next_page = page_number + 1 if page_number < total_pages else None
 

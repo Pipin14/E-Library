@@ -18,34 +18,6 @@ function toggleDescription() {
 }
 
 
-document.addEventListener('DOMContentLoaded', function () {
-    const bookmarkButtons = document.querySelectorAll('.bookmark-btn');
-
-    bookmarkButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const bookId = this.getAttribute('data-id');
-            fetch(`/favorit/toggle_favorite/${bookId}/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-                },
-                body: JSON.stringify({ 'book_id': bookId })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const icon = this.querySelector('svg');
-                    if (data.is_favorite) {
-                        icon.setAttribute('fill', 'currentColor');
-                    } else {
-                        icon.setAttribute('fill', 'none'); 
-                    }
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        });
-    });
 
     
     document.getElementById('deleteButtonMain').addEventListener('click', function(event) {

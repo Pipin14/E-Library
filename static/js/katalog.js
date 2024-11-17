@@ -1,5 +1,4 @@
 $(document).ready(function() {
-    // Event listener untuk tombol favorit
     $(".bookmark-btn").on("click", function() {
         var button = $(this);
         var bookId = button.data("book-id");
@@ -27,6 +26,8 @@ $(document).ready(function() {
         });
     });
 });
+
+
 document.getElementById('favoriteFilter').addEventListener('change', function() {
     this.form.submit();
 });
