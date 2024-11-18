@@ -51,10 +51,10 @@ Aplikasi E-Library yang memungkinkan pengguna untuk melihat katalog buku, mengak
    ```bash
    python manage.py makemigration
    ```
-   or
+  and then
    
    ```bash
-   python manage.py makemigration
+   python manage.py migrate
 
 5. **Jalankan server:**
    ```bash
